@@ -7,7 +7,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/grpclib-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/grpclib-{{ version }}.tar.gz
   sha256: cc589c330fa81004c6400a52a566407574498cb5b055fa927013361e21466c46
 
 build:
@@ -16,12 +16,14 @@ build:
   entry_points:
     - protoc-gen-python_grpc=grpclib.plugin.main:main
     - protoc-gen-grpclib_python=grpclib.plugin.main:main
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
     - pip
     - python
+    - setuptools
+    - wheel
   run:
     - python
     - h2 <5,>=3.1.0
