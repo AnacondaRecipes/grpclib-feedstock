@@ -1,5 +1,5 @@
 {% set name = "grpclib" %}
-{% set version = "0.4.3" %}
+{% set version = "0.4.9" %}
 
 
 package:
@@ -7,26 +7,29 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/grpclib-{{ version }}.tar.gz
-  sha256: eadf2002fc5a25158b707c0338a6c0b96dd7fbdc6df66f7e515e7f041d56a940
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/grpclib-{{ version }}.tar.gz
+  sha256: cc589c330fa81004c6400a52a566407574498cb5b055fa927013361e21466c46
 
 build:
   number: 0
-  noarch: python
+  skip: True  # [py<310]
   entry_points:
     - protoc-gen-python_grpc=grpclib.plugin.main:main
     - protoc-gen-grpclib_python=grpclib.plugin.main:main
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
     - pip
-    - python >=3.6
+    - python
+    - setuptools >=40.6.0
+    - wheel
   run:
-    - python >=3.6
-    - dataclasses
+    - python
     - h2 <5,>=3.1.0
     - multidict
+  run_constrained:
+    - protobuf >=3.20.0
 test:
   imports:
     - grpclib
@@ -39,8 +42,16 @@ test:
 about:
   home: https://github.com/vmagamedov/grpclib
   summary: Pure-Python gRPC implementation for asyncio
+  description: |
+    grpclib is a pure-Python gRPC implementation for asyncio, based on the
+    hyper-h2 HTTP/2 library. It provides a lightweight client and server
+    implementation of the gRPC protocol without requiring the C-based
+    grpcio runtime.
   license: BSD-3-Clause
+  license_family: BSD
   license_file: LICENSE.txt
+  doc_url: https://grpclib.readthedocs.io/
+  dev_url: https://github.com/vmagamedov/grpclib
 
 extra:
   recipe-maintainers:
