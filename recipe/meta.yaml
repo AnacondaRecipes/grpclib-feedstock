@@ -54,5 +54,9 @@ about:
   dev_url: https://github.com/vmagamedov/grpclib
 
 extra:
+  anaconda-services:
+    ref: https://anaconda.zendesk.com/agent/tickets/44083
+    reason: Dependency for ray-packages
   recipe-maintainers:
+    - ianaobi
     - asford
